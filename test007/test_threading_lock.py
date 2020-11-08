@@ -1,15 +1,20 @@
 import threading
 import time
 
+# 获得一把锁
+my_lock = threading.Lock()
+
 balance = 0
 
 def change_it(n):
     global balance
-    balance = balance + n
-    time.sleep(2)
-    balance = balance - n
-    time.sleep(1)
-    print("--------------->{0}-----{1}".format(n, balance))
+    with my_lock:
+        # 添加锁
+        balance = balance + n
+        time.sleep(2)
+        balance = balance - n
+        time.sleep(1)
+        print("--------------->{0}---{1}".format(n, balance))
 
 class changeBalanceThread(threading.Thread):
     def __init__(self, num, *args, **kwargs):
